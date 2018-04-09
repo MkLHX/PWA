@@ -46,7 +46,7 @@ if (navigator.serviceWorker) {
                             console.log("new subcription : ", newSubscription);
                             // no more keys proprety directly visible on the subscription objet. So you have to use getKey()
                             const key = newSubscription.getKey('p256dh');
-                            const auh = newSubscription.getKey('auth');
+                            const auth = newSubscription.getKey('auth');
                             console.log('p256dh key : ', key);
                             console.log('auth key : ', auth);
                             return subscription;
