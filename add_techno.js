@@ -7,12 +7,14 @@ addTechnoForm.addEventListener('submit', evt => {
     evt.preventDefault();
 
     const payload = {
+        id: Date.now(),
         name: technonameField.value,
         description: technoDescriptionField.value,
-        url: technoUrlField.value
+        url: technoUrlField.value,
+        unsynced: true,
     }
 
-    fetch('http://localhost:3001/technos', {
+    fetch('https://nodetestapi-thyrrtzgdz.now.sh/technos', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -22,5 +24,31 @@ addTechnoForm.addEventListener('submit', evt => {
         .then(resp => {
             console.log(resp);
         })
-        .catch(err => console.error);
-})
+        .catch(() => {
+            if ('serviceWorker' in navigator && 'SyncManager' in window) {
+                console.log('SyncManager supported by browser');
+                navigator.serviceWorker.ready.then(registration => {
+                    // put techno in IndexedDB for later syncing
+                    console.log('dans le catch de add_techno car offline');
+                    return putTechno(payload, payload.id).then(() => {
+                        // register a sync with the ServiceWorker
+                        return registration.sync.register('sync-technos')
+                    });
+                })
+            } else {
+                // TODO browser does NOT support SyncManager: send data to server via ajax
+                console.log('SyncManager NOT supported by your browser');
+            }
+        })
+        .then(() => {
+            clearForm();
+        })
+        .catch(error => console.error(error));
+});
+
+const clearForm = () => {
+    technonameField.value = '';
+    technoDescriptionField.value = '';
+    technoUrlField.value = '';
+    technonameField.focus();
+};
