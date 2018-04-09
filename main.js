@@ -1,17 +1,20 @@
 const technosDiv = document.querySelector('#technos');
 
 function loadTechnologies() {
-    fetch("http://localhost:3001/technos")
-        .then(response => {
-            response.json()
-                .then(technos => {
-                    const allTechnos = technos.map(t => `<div class="ml-3"><b>${t.name}</b> ${t.description}  <a href="${t.url}">site de ${t.name}</a> </div>`)
-                        .join('');
+    fetch('https://nodetestapi-thyrrtzgdz.now.sh/technos')
+        .then(response => response.json())
+        .then(technos => {
+            console.log('response from loadTechnologies', technos);
+            // mongodb is unreachable by node is, so cache is not used when on localhost
+            if (technos.keys().count === 0) {
+                allTechnos = ['Serveur accessible mais MongoDB inacessible'];
+            }
+            const allTechnos = technos.map(t => `<div class="ml-3"><b>${t.name}</b> ${t.description}  <a href="${t.url}">site de ${t.name}</a> </div>`)
+                .join('');
 
-                    technosDiv.innerHTML = allTechnos;
-                });
+            technosDiv.innerHTML = allTechnos;
         })
-        .catch(err => console.error);
+        .catch (err => console.error);
 }
 
 loadTechnologies();

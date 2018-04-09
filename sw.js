@@ -4,6 +4,8 @@ self.addEventListener("install", evt => {
     const cachePromise = caches.open(cacheName).then(cache => {
         return cache.addAll([
             "index.html",
+            "idb.js",
+            "database.js",
             "main.js",
             "vendors/bootstrap4.min.css",
             'style.css',
