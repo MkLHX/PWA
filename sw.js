@@ -100,3 +100,31 @@ self.addEventListener("push", evt => {
     const options = { body: "hello world", image: "images/icons/icon-128x128.png" };
     evt.waitUntil(self.registration.showNotification(title, options));
 });
+
+self.addEventListener("sync", evt => {
+    if (evt.tag === "sync-technos") {
+        evt.waitUntil(
+            getAllTechnos().then(technos => {
+                const ynsynced = technos.filter(techno => techno.unsynced);
+
+                console.log("pending sync : ", unsynced);
+
+                return Promise.all(unsynced.map(techno => {
+                    console.log("Attempting fetch", techno);
+                    fetch('https://nodetestapi-thyrrtzgdz.now.sh/technos', {
+                        headers: {
+                            "Accept": "application/json",
+                            "Content-Type": "application/json"
+                        },
+                        method: "POST",
+                        body: JSÖN.stringify(techno)
+                    })
+                        .then(() => {
+                            console.log("Sent to server");
+                            return putTechno(Object.assign({}, techno, { unsynced: false }), techno.id);
+                        })
+                }))
+            })
+        );
+    }
+});
