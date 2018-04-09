@@ -14,7 +14,7 @@ function loadTechnologies() {
 
             technosDiv.innerHTML = allTechnos;
         })
-        .catch (err => console.error);
+        .catch(err => console.error);
 }
 
 loadTechnologies();
@@ -27,7 +27,13 @@ if (navigator.serviceWorker) {
             registration.pushManager.getSubscription().then(subscription => {
                 if (subscription) {
                     console.log('subscription : ', subscription);
-                    extractKeysFromArrayBuffer(subscription);
+                    // no more keys proprety directly visible on the subscription objet. So you have to use getKey()
+                    const keyArrayBuffer = subscription.getKey('p256dh');
+                    const authArrayBuffer = subscription.getKey('auth');
+                    const p256dh = btoa(String.fromCharCode.apply(null, new Uint8Array(keyArrayBuffer)));
+                    const auth = btoa(String.fromCharCode.apply(null, new Uint8Array(authArrayBuffer)));
+                    console.log('p256dh key : ', keyArrayBuffer, p256dh);
+                    console.log('auth key : ', authArrayBuffer, auth);
                     return subscription;
                 } else {
                     //ask to subscribe to FCM
@@ -38,7 +44,11 @@ if (navigator.serviceWorker) {
                     })
                         .then(newSubscription => {
                             console.log("new subcription : ", newSubscription);
-                            extractKeysFromArrayBuffer(subscription);
+                            // no more keys proprety directly visible on the subscription objet. So you have to use getKey()
+                            const key = newSubscription.getKey('p256dh');
+                            const auh = newSubscription.getKey('auth');
+                            console.log('p256dh key : ', key);
+                            console.log('auth key : ', auth);
                             return subscription;
                         })
                 }
