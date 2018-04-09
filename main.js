@@ -38,7 +38,7 @@ if (navigator.serviceWorker) {
                     })
                         .then(newSubscription => {
                             console.log("new subcription : ", newSubscription);
-                            extractKeysFromArrayBuffer(subcription);
+                            extractKeysFromArrayBuffer(subscription);
                             return subscription;
                         })
                 }
