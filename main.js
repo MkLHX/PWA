@@ -4,7 +4,7 @@ function loadTechnologies() {
     fetch('https://nodetestapi-thyrrtzgdz.now.sh/technos')
         .then(response => response.json())
         .then(technos => {
-            console.log('response from loadTechnologies', technos);
+            //console.log('response from loadTechnologies', technos);
             // mongodb is unreachable by node is, so cache is not used when on localhost
             if (technos.keys().count === 0) {
                 allTechnos = ['Serveur accessible mais MongoDB inacessible'];
