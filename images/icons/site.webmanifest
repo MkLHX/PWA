@@ -1,6 +1,11 @@
 {
-    "name": "",
-    "short_name": "",
+    "name": "veille techno",
+    "short_name": "vtech",
+    "theme_color": "#d3c7dc",
+    "background_color": "#d3c7dc",
+    "display": "standalone",
+    "scope": ".",
+    "start_url": ".",
     "icons": [
         {
             "src": "/android-chrome-192x192.png",
@@ -13,7 +18,4 @@
             "type": "image/png"
         }
     ],
-    "theme_color": "#ffffff",
-    "background_color": "#ffffff",
-    "display": "standalone"
 }
