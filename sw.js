@@ -1,4 +1,4 @@
-const cacheName = "veille-techno-1.2";
+const cacheName = "veille-techno-1.3";
 self.addEventListener("install", evt => {
     console.log(`sw installed at ${new Date().toLocaleTimeString()}`);
     const cachePromise = caches.open(cacheName).then(cache => {
